@@ -1,0 +1,2 @@
+var app=webpackJsonp_name_([0,2],[function(n,e,t){"use strict";var o=document.getElementById("show-news");o&&(o.onclick=function(n){t.e(1,function(n){var t=[n(1)];(function(n){var t=new n;t.init(),o.style.display="none",e.controller=t}).apply(null,t)})})}]);
+//# sourceMappingURL=app.js.map
