@@ -2,28 +2,29 @@
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
 const webpack = require('webpack');
+var path = require("path");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
-    context: __dirname + "/js/src/",
     entry: {
-        app: "./app"
+        app: "./js/src/app.js",
+        test: "./js/customLoader/test.json"
     },
 
     output: {
         path: __dirname + "/js/build",
         publicPath: __dirname + "/js/build/",
         filename: "[name].js",
-        library: "[name]"     // параметр для доступа к экспортируемым переменным, если нужно будет вызвать экспортируемые функции позже (home.welcome();)
+        library: "[name]"       // option to access the exported variables if you want to call the exported functions later (home.welcome();)
     },
 
-    watch: NODE_ENV == 'development',    //настройка для ожидания изменений и автоматической пересборки после каждого сохранения файлов
+    watch: NODE_ENV == 'development', //Configuring for pending the changes and automatic rebuild after each save files
 
     watchOptions: {
-        aggregateTimeout: 100   //Указывается количество милисек, в теч. которых webpack ждет до перезапуска сборки
+        aggregateTimeout: 100   // Delay the rebuild after the first change. Value is time in ms.
     },
 
-    devtool: NODE_ENV == 'development' ? "source-map" : null,    //для того чтобы при дэбаге находитьс в исходном файле модуля
+    devtool: NODE_ENV == 'development' ? "source-map" : null, // to ensure that debugger have the source file of the module
 
     resolve: {
         modulesDirectories: ['node_modules'],
@@ -41,35 +42,43 @@ module.exports = {
 
         loaders: [{
             test: /\.js$/,
-            loader: 'babel',
-            query: {
-                presets: ['es2015']
-            }
+            loader: 'babel-loader'
         }, {
             test: /\.css$/,
-            //loaders: ['style', 'css', 'resolve-url']
-            //loader: "style!css!"
-            loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+            loader: ExtractTextPlugin.extract("style-loader", "css-loader")  // plugin that allows you to generate css in a separate file
+                //loader: 'style-loader!css-loader'   // css include in js file
+        }, {
+            test: /\.(png|jpg|svg|ttf|eot|woff|woff2)$/,
+            loader: 'url?name=[path][name].[ext]&limit=4096' // return data url (for image it is base64 string)
+        }, {
+            test: /\.json$/,
+            loader: __dirname + "/js/customLoader/customLoader!json-loader"
         }]
     },
 
     plugins: [
         new ExtractTextPlugin("[name].css"),
 
-        new webpack.NoErrorsPlugin(),   // если будет ошибка во время сборки, файлы не сгенерятся
+        new webpack.NoErrorsPlugin(),     // If there is an error during Assembly, the files do not generate
 
         new webpack.DefinePlugin({
-            NODE_ENV: JSON.stringify(NODE_ENV) // для передачи тех ключей окружения, которые необходимо сделать доступными клиенту
+            NODE_ENV: JSON.stringify(NODE_ENV)    // for the transfer of those keys environment that you want to make available to the client
         }),
 
-        new webpack.optimize.UglifyJsPlugin({   // для минификации
-            compress: {
-                warnings: false
-            }
-        }),
+        // new webpack.optimize.UglifyJsPlugin({ // for minify
+        //     compress: {
+        //         warnings: false
+        //     }
+        // }),
 
-        new webpack.optimize.CommonsChunkPlugin({   // выделяется общий кусок из всех файлов, если есть несколько точек сборки
-            name: "common"
-        })
-    ]
+        // new webpack.optimize.CommonsChunkPlugin({ // total allocated chunk of all files, if there are several assembly points
+        //     name: "common"
+        // })
+    ],
+
+    devServer: {
+        //contentBase: "./js/build",
+        host: 'localhost',
+        port: 8080
+    }
 };

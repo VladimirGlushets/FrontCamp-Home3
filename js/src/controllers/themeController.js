@@ -1,3 +1,5 @@
+import '../../../css/article.css';
+
 import DataService from '../services/dataService';
 import HtmlService from '../services/htmlService';
 

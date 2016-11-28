@@ -1,17 +1,10 @@
-.content-container {
-    width: 50%;
-    margin: auto;
-}
-
 .content-container .back-btn {
     cursor: pointer;
     border: solid 1px orange;
     font-weight: bold;
     padding: 8px;
     text-align: center;
-    margin-top: 16px;
-    margin-left: 16px;
-    margin-right: 16px;
+    margin: 15px;
     width: 70px;
 }
 
@@ -23,6 +16,10 @@
     margin-top: 5px;
     background-color: white;
     padding: 15px;
+}
+
+.article-container:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .article-container .body {
@@ -76,7 +73,6 @@
     max-width: 100%;
     max-height: 100%;
 }
-
 
 /* Portrait tablet to landscape and desktop */
 

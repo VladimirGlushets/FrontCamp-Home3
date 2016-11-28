@@ -26,14 +26,30 @@ body {
     text-decoration: none;
 }
 
-.btn{
+.content-container {
+    width: 50%;
+    margin: auto;
+}
+
+.btn {
     cursor: pointer;
     border: solid 1px orange;
     font-weight: bold;
     padding: 8px;
     text-align: center;
-    margin-top: 16px;
-    margin-left: 16px;
-    margin-right: 16px;
+    margin: 15px;
     width: 70px;
 }
+
+#show-news {
+    width: 100%;
+    margin-top: 30px;
+    font-size: xx-large;
+}
+
+#show-news:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    background-color: #ffc183;
+}
+
+/*# sourceMappingURL=app.css.map*/

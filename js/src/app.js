@@ -2,12 +2,12 @@ import '../../css/layout.css';
 
 let showNews = document.getElementById('show-news');
 
-if(showNews){
+if (showNews) {
     showNews.onclick = () => {
 
         // AMD
         require(['./controllers/themeController'],
-            (Controller)=>{
+            (Controller) => {
                 let controller = new Controller();
                 controller.init();
 
@@ -17,4 +17,3 @@ if(showNews){
             });
     };
 }
-
