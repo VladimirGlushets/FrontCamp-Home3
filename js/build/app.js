@@ -86,7 +86,7 @@ var app =
 /******/ 	__webpack_require__.c = installedModules;
 /******/
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "D:\\Skills\\Mentoring\\FrontCamp Mentoring\\Practice\\FrontCamp-Home3/js/build/";
+/******/ 	__webpack_require__.p = "/js/build/";
 /******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -104,12 +104,12 @@ var app =
 	
 	if (showNews) {
 	    showNews.onclick = function () {
-	
 	        // AMD
 	        __webpack_require__.e/* require */(1, function(__webpack_require__) { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(5)]; (function (Controller) {
 	            var controller = new Controller();
 	            controller.init();
 	
+	            // hide showNews button
 	            showNews.style.display = 'none';
 	
 	            exports.controller = controller;

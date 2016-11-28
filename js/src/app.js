@@ -4,13 +4,13 @@ let showNews = document.getElementById('show-news');
 
 if (showNews) {
     showNews.onclick = () => {
-
         // AMD
-        require(['./controllers/themeController'],
+        require(["./controllers/themeController"],
             (Controller) => {
                 let controller = new Controller();
                 controller.init();
 
+                // hide showNews button
                 showNews.style.display = 'none';
 
                 exports.controller = controller;

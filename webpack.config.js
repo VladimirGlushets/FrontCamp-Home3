@@ -13,7 +13,7 @@ module.exports = {
 
     output: {
         path: __dirname + "/js/build",
-        publicPath: __dirname + "/js/build/",
+        publicPath: "/js/build/",
         filename: "[name].js",
         library: "[name]"       // option to access the exported variables if you want to call the exported functions later (home.welcome();)
     },
@@ -45,7 +45,7 @@ module.exports = {
             loader: 'babel-loader'
         }, {
             test: /\.css$/,
-            loader: ExtractTextPlugin.extract("style-loader", "css-loader")  // plugin that allows you to generate css in a separate file
+            loader: ExtractTextPlugin.extract("style-loader", "css-loader", "resolve-url")  // plugin that allows you to generate css in a separate file
                 //loader: 'style-loader!css-loader'   // css include in js file
         }, {
             test: /\.(png|jpg|svg|ttf|eot|woff|woff2)$/,
@@ -77,7 +77,6 @@ module.exports = {
     ],
 
     devServer: {
-        //contentBase: "./js/build",
         host: 'localhost',
         port: 8080
     }
