@@ -13,7 +13,7 @@ module.exports = {
 
     output: {
         path: __dirname + "/js/build",
-        publicPath: "/js/build/",
+        publicPath: "/FrontCamp-Home3/js/build/",
         filename: "[name].js",
         library: "[name]"       // option to access the exported variables if you want to call the exported functions later (home.welcome();)
     },

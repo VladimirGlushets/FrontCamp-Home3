@@ -2,23 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d7496b02-2334-4a2d-bc0e-f102adc3d871" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/reduce-function-call/node_modules/balanced-match/.npmignore" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/reduce-function-call/node_modules/balanced-match/.travis.yml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/reduce-function-call/node_modules/balanced-match/History.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/reduce-function-call/node_modules/balanced-match/Makefile" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/reduce-function-call/node_modules/balanced-match/README.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/reduce-function-call/node_modules/balanced-match/component.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/reduce-function-call/node_modules/balanced-match/example.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/reduce-function-call/node_modules/balanced-match/index.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/reduce-function-call/node_modules/balanced-match/package.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/reduce-function-call/node_modules/balanced-match/test/balanced.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/build/1.1.js.map" afterPath="$PROJECT_DIR$/js/build/1.1.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/build/app.js" afterPath="$PROJECT_DIR$/js/build/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/build/app.js.map" afterPath="$PROJECT_DIR$/js/build/app.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/build/test.js" afterPath="$PROJECT_DIR$/js/build/test.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/build/test.js.map" afterPath="$PROJECT_DIR$/js/build/test.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/src/app.js" afterPath="$PROJECT_DIR$/js/src/app.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webpack.config.js" afterPath="$PROJECT_DIR$/webpack.config.js" />
     </list>
     <ignored path="FrontCamp-Home3.iws" />
@@ -43,8 +26,8 @@
       <file leaf-file-name="webpack.config.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/webpack.config.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+            <state relative-caret-position="272">
+              <caret line="24" column="6" selection-start-line="24" selection-start-column="6" selection-end-line="24" selection-end-column="6" />
               <folding />
             </state>
           </provider>
@@ -256,12 +239,12 @@
       <option name="presentableId" value="Default" />
       <updated>1480247218015</updated>
       <workItem from="1480247219653" duration="15762000" />
-      <workItem from="1480358589737" duration="3365000" />
+      <workItem from="1480358589737" duration="3514000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="19127000" />
+    <option name="totallyTimeSpent" value="19276000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1378" height="744" extended-state="0" />
@@ -446,8 +429,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/webpack.config.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+        <state relative-caret-position="272">
+          <caret line="24" column="6" selection-start-line="24" selection-start-column="6" selection-end-line="24" selection-end-column="6" />
           <folding />
         </state>
       </provider>
