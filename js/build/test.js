@@ -45,7 +45,7 @@ var test =
 /* 0 */
 /***/ function(module, exports) {
 
-	module.exports = {"ddd2":2,"ddd3":"3","dsfsfd3":"asdfsdfs5"};
+	module.exports = {"1":"ddd","ddd3":"3","dsfsfd3":"asdfsdfs5"};
 
 /***/ }
 /******/ ]);

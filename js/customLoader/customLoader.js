@@ -7,7 +7,7 @@ module.exports = function(source) {
     let obj = JSON.parse(str);
 
     for(var key in obj) {
-        if(parseInt(key))
+        if(Number.isInteger(obj[key]))
         {
           delete obj[key];
         }
