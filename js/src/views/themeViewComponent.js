@@ -1,3 +1,6 @@
+import Constants from '../common/const';
+import Publisher from '../common/publisher';
+
 // private method
 const getImageElement = function(id, imageUrl, callback) {
     let image = document.createElement("div");
@@ -46,10 +49,9 @@ const getDescriptionElement = function(description) {
     return descriptionEl;
 }
 
-export default class ThemeViewComponent {
-    constructor(componentSourceObj, callback) {
+export default class ThemeViewComponent{
+    constructor(componentSourceObj) {
         this.componentSourceObj = componentSourceObj;
-        this.callback = callback;
     }
 
     getView() {
@@ -59,9 +61,9 @@ export default class ThemeViewComponent {
         let body = document.createElement("div");
         body.setAttribute("class", "body");
 
-        let image = getImageElement(this.componentSourceObj.id, this.componentSourceObj.urlsToLogos.small, this.callback);
+        let image = getImageElement(this.componentSourceObj.id, this.componentSourceObj.urlsToLogos.small, this.changeSelectedThemeId);
 
-        let title = getTitleElement(this.componentSourceObj.id, this.componentSourceObj.name, this.callback);
+        let title = getTitleElement(this.componentSourceObj.id, this.componentSourceObj.name, this.changeSelectedThemeId);
 
         let description = getDescriptionElement(this.componentSourceObj.description);
 
@@ -71,5 +73,10 @@ export default class ThemeViewComponent {
 
         root.appendChild(body);
         return root;
+    }
+
+    changeSelectedThemeId(id){
+      //init notifying all callbacks, subscraibed on changeTheme event
+      Publisher.getInstance().notify(Constants.CHANGE_THEME, id);
     }
 }

@@ -1,9 +1,9 @@
 import '../../../css/article.css';
 
+import Constants from '../common/const';
 import DataServiceProxy from '../services/dataServiceProxy';
 import ViewService from '../services/viewService';
-import Observeble from '../common/observeble';
-import Constants from '../common/const';
+import Publisher from '../common/publisher';
 
 // controller get requests, generate nesessary html and put it in DOM
 export default class ThemeController {
@@ -17,7 +17,7 @@ export default class ThemeController {
         this.dataServiceProxy.getAllThemes().then((data) => {
 
             // after getting data I converted it to DOM elements
-            let themesView = this.viewService.getThemesView(data, this.fillArticles.bind(this));
+            let themesView = this.viewService.getThemesView(data);
 
             // render view
             this.renderView(themesView);
@@ -52,7 +52,10 @@ export default class ThemeController {
 
     // init start page
     init() {
-        Observeble.getInstance().subscribe(Constants.CHANGE_THEME, this.fillArticles.bind(this));
+        // subscribe 'fillArticles' controller's method for Publisher event 'changeTheme'
+        Publisher.getInstance().subscribe(Constants.CHANGE_THEME, this.fillArticles.bind(this));
+        // subscribe 'fillThemes' controller's method for Publisher event 'back'
+        Publisher.getInstance().subscribe(Constants.BACK, this.fillThemes.bind(this));
         this.fillThemes();
     }
 }

@@ -1,6 +1,6 @@
 import Constants from '../common/const';
 import ComponentFactory from '../factories/componentFactory';
-
+import Publisher from '../common/publisher';
 
 const getBackEl = function(callback) {
     let back = document.createElement("div");
@@ -48,7 +48,7 @@ export default class ViewService {
         let container = document.createElement("div");
 
         //create back-btn element
-        let back = getBackEl(callback);
+        let back = getBackEl(this.goBack);
         container.appendChild(back);
 
         viewElements.forEach((el) => {
@@ -56,5 +56,11 @@ export default class ViewService {
         });
 
         return container;
+    }
+
+    goBack(){
+
+      // init notifying all callbacks, subscraibed on back event
+      Publisher.getInstance().notify(Constants.BACK);
     }
 }
