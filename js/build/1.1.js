@@ -9,17 +9,29 @@ webpackJsonp_name_([1],[
 
 	'use strict';
 	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	__webpack_require__(6);
 	
-	var _dataService = __webpack_require__(8);
+	var _dataServiceProxy = __webpack_require__(8);
 	
-	var _dataService2 = _interopRequireDefault(_dataService);
+	var _dataServiceProxy2 = _interopRequireDefault(_dataServiceProxy);
 	
-	var _htmlService = __webpack_require__(10);
+	var _viewService = __webpack_require__(11);
 	
-	var _htmlService2 = _interopRequireDefault(_htmlService);
+	var _viewService2 = _interopRequireDefault(_viewService);
+	
+	var _observeble = __webpack_require__(16);
+	
+	var _observeble2 = _interopRequireDefault(_observeble);
+	
+	var _const = __webpack_require__(12);
+	
+	var _const2 = _interopRequireDefault(_const);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -30,8 +42,8 @@ webpackJsonp_name_([1],[
 	    function ThemeController() {
 	        _classCallCheck(this, ThemeController);
 	
-	        this.dataService = new _dataService2.default();
-	        this.htmlService = new _htmlService2.default();
+	        this.dataServiceProxy = _dataServiceProxy2.default.getInstance();
+	        this.viewService = _viewService2.default.getInstance();
 	    }
 	
 	    _createClass(ThemeController, [{
@@ -39,18 +51,14 @@ webpackJsonp_name_([1],[
 	        value: function fillThemes() {
 	            var _this = this;
 	
-	            this.dataService.getAllThemes().then(function (data) {
+	            // get source data
+	            this.dataServiceProxy.getAllThemes().then(function (data) {
 	
-	                // after getting data I converted it into html text
-	                var themesHtml = _this.htmlService.getThemesHtml(data, _this);
+	                // after getting data I converted it to DOM elements
+	                var themesView = _this.viewService.getThemesView(data, _this.fillArticles.bind(_this));
 	
-	                // found container for pushing html articles
-	                var container = document.getElementById('content');
-	
-	                if (container) {
-	                    // pushed articles into container
-	                    container.innerHTML = themesHtml.join(' ');
-	                }
+	                // render view
+	                _this.renderView(themesView);
 	            }).catch(function (err) {
 	                console.log(err);
 	            });
@@ -60,27 +68,26 @@ webpackJsonp_name_([1],[
 	        value: function fillArticles(theme) {
 	            var _this2 = this;
 	
-	            this.dataService.getArticlesForThema(theme).then(function (data) {
+	            //get source data
+	            this.dataServiceProxy.getArticlesForThema(theme).then(function (data) {
 	
-	                //create back-btn element
-	                var back = document.createElement("div");
-	                back.setAttribute("class", "back-btn");
-	                back.innerHTML = "Back";
-	                back.addEventListener("click", _this2.fillThemes.bind(_this2), false);
+	                // after getting data I converted it to DOM elements
+	                var articlesView = _this2.viewService.getArticlesView(data, _this2.fillThemes.bind(_this2));
 	
-	                // create articles div and fill it by articles
-	                var articles = document.createElement("div");
-	                articles.setAttribute("class", "articles");
-	                articles.innerHTML = _this2.htmlService.getArticlesHtml(data).join(' ');
-	
-	                // found 'content' container for pushing back-btn and articles html
-	                var articlesContainer = document.getElementById('content');
-	                articlesContainer.innerHTML = '';
-	                articlesContainer.appendChild(back);
-	                articlesContainer.appendChild(articles);
+	                // render view
+	                _this2.renderView(articlesView);
 	            }).catch(function (err) {
 	                console.log(err);
 	            });
+	        }
+	    }, {
+	        key: 'renderView',
+	        value: function renderView(view) {
+	            var container = document.getElementById('content');
+	            if (container) {
+	                container.innerHTML = '';
+	                container.appendChild(view);
+	            }
 	        }
 	
 	        // init start page
@@ -88,6 +95,7 @@ webpackJsonp_name_([1],[
 	    }, {
 	        key: 'init',
 	        value: function init() {
+	            _observeble2.default.getInstance().subscribe(_const2.default.CHANGE_THEME, this.fillArticles.bind(this));
 	            this.fillThemes();
 	        }
 	    }]);
@@ -95,7 +103,7 @@ webpackJsonp_name_([1],[
 	    return ThemeController;
 	}();
 	
-	module.exports = ThemeController;
+	exports.default = ThemeController;
 
 /***/ },
 /* 6 */
@@ -149,7 +157,71 @@ webpackJsonp_name_([1],[
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _urlService = __webpack_require__(9);
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	
+	var _dataService = __webpack_require__(9);
+	
+	var _dataService2 = _interopRequireDefault(_dataService);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var instance = null;
+	
+	// use DataServiceProxy to cache list of themes
+	
+	var DataServiceProxy = function (_DataService) {
+	    _inherits(DataServiceProxy, _DataService);
+	
+	    function DataServiceProxy() {
+	        _classCallCheck(this, DataServiceProxy);
+	
+	        return _possibleConstructorReturn(this, (DataServiceProxy.__proto__ || Object.getPrototypeOf(DataServiceProxy)).apply(this, arguments));
+	    }
+	
+	    _createClass(DataServiceProxy, [{
+	        key: 'getAllThemes',
+	        value: function getAllThemes() {
+	            if (!this.themes) {
+	                this.themes = _get(DataServiceProxy.prototype.__proto__ || Object.getPrototypeOf(DataServiceProxy.prototype), 'getAllThemes', this).call(this);
+	            }
+	            return this.themes;
+	        }
+	    }], [{
+	        key: 'getInstance',
+	        value: function getInstance() {
+	            if (!instance) {
+	                instance = new DataServiceProxy();
+	            }
+	
+	            // return singltone
+	            return instance;
+	        }
+	    }]);
+	
+	    return DataServiceProxy;
+	}(_dataService2.default);
+	
+	exports.default = DataServiceProxy;
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _urlService = __webpack_require__(10);
 	
 	var _urlService2 = _interopRequireDefault(_urlService);
 	
@@ -162,7 +234,7 @@ webpackJsonp_name_([1],[
 	    function DataService() {
 	        _classCallCheck(this, DataService);
 	
-	        this.urlService = new _urlService2.default();
+	        this.urlService = _urlService2.default.getInstance();
 	    }
 	
 	    _createClass(DataService, [{
@@ -200,7 +272,7 @@ webpackJsonp_name_([1],[
 	;
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -213,8 +285,11 @@ webpackJsonp_name_([1],[
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
+	// private variables
 	var themesUrl = 'https://newsapi.org/v1/sources';
 	var apiKey = '05d1310787a94c24a707f1c3c8d2584c';
+	
+	var instance = null;
 	
 	var UrlService = function () {
 	    function UrlService() {
@@ -234,6 +309,16 @@ webpackJsonp_name_([1],[
 	        value: function getArticlesUrl(theme) {
 	            return 'https://newsapi.org/v1/articles?source=' + theme + '&apiKey=' + apiKey;
 	        }
+	    }], [{
+	        key: 'getInstance',
+	        value: function getInstance() {
+	            if (!instance) {
+	                instance = new UrlService();
+	            }
+	
+	            // return singltone
+	            return instance;
+	        }
 	    }]);
 	
 	    return UrlService;
@@ -242,7 +327,106 @@ webpackJsonp_name_([1],[
 	exports.default = UrlService;
 
 /***/ },
-/* 10 */
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _const = __webpack_require__(12);
+	
+	var _const2 = _interopRequireDefault(_const);
+	
+	var _componentFactory = __webpack_require__(13);
+	
+	var _componentFactory2 = _interopRequireDefault(_componentFactory);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var getBackEl = function getBackEl(callback) {
+	    var back = document.createElement("div");
+	    back.setAttribute("class", "back-btn");
+	    back.innerHTML = "Back";
+	    back.addEventListener("click", callback, false);
+	    return back;
+	};
+	
+	var instance = null;
+	
+	// service for converting JSON objects to HTML themes and articles objects
+	
+	var ViewService = function () {
+	    function ViewService() {
+	        _classCallCheck(this, ViewService);
+	
+	        this.componentFactory = new _componentFactory2.default();
+	    }
+	
+	    _createClass(ViewService, [{
+	        key: 'getThemesView',
+	        value: function getThemesView(sourceObjs, callback) {
+	            var _this = this;
+	
+	            // get themes view components
+	            var viewElements = sourceObjs.map(function (el) {
+	                return _this.componentFactory.createViewComponent(el, _const2.default.THEME, callback).getView();
+	            });
+	
+	            var container = document.createElement("div");
+	
+	            viewElements.forEach(function (el) {
+	                container.appendChild(el);
+	            });
+	
+	            return container;
+	        }
+	    }, {
+	        key: 'getArticlesView',
+	        value: function getArticlesView(sourceObjs, callback) {
+	            var _this2 = this;
+	
+	            // get articles view components
+	            var viewElements = sourceObjs.map(function (el) {
+	                return _this2.componentFactory.createViewComponent(el, _const2.default.ARTICLE).getView();
+	            });
+	
+	            var container = document.createElement("div");
+	
+	            //create back-btn element
+	            var back = getBackEl(callback);
+	            container.appendChild(back);
+	
+	            viewElements.forEach(function (el) {
+	                container.appendChild(el);
+	            });
+	
+	            return container;
+	        }
+	    }], [{
+	        key: 'getInstance',
+	        value: function getInstance() {
+	            if (!instance) {
+	                instance = new ViewService();
+	            }
+	            // return singltone
+	            return instance;
+	        }
+	    }]);
+	
+	    return ViewService;
+	}();
+	
+	exports.default = ViewService;
+
+/***/ },
+/* 12 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -250,47 +434,365 @@ webpackJsonp_name_([1],[
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	var constants = {
+	  THEME: 'theme',
+	  ARTICLE: 'article',
+	  CHANGE_THEME: 'changeTheme'
+	};
+	
+	exports.default = constants;
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _const = __webpack_require__(12);
+	
+	var _const2 = _interopRequireDefault(_const);
+	
+	var _themeViewComponent = __webpack_require__(14);
+	
+	var _themeViewComponent2 = _interopRequireDefault(_themeViewComponent);
+	
+	var _articleViewComponent = __webpack_require__(15);
+	
+	var _articleViewComponent2 = _interopRequireDefault(_articleViewComponent);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	// factory fo creating view components
+	var ComponentFactory = function () {
+	    function ComponentFactory() {
+	        _classCallCheck(this, ComponentFactory);
+	    }
+	
+	    _createClass(ComponentFactory, [{
+	        key: 'createViewComponent',
+	        value: function createViewComponent(componentSourceObj, componentName, callback) {
+	            switch (componentName) {
+	                case _const2.default.THEME:
+	                    return new _themeViewComponent2.default(componentSourceObj, callback);
+	                    break;
+	
+	                case _const2.default.ARTICLE:
+	                    return new _articleViewComponent2.default(componentSourceObj);
+	                    break;
+	
+	                default:
+	                    break;
+	            }
+	        }
+	    }]);
+	
+	    return ComponentFactory;
+	}();
+	
+	exports.default = ComponentFactory;
+
+/***/ },
+/* 14 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	// When I use modules feature it will be a private function (I think)
-	var createThemes = function createThemes(themaJson, controller) {
-	  return '\n    <div class="article-container">\n      <div class="body">\n        <div class="image">\n          <div class=\'floater\'>\n            <a href="#" onclick = "app.controller.fillArticles(\'' + themaJson.id + '\');" >\n              <img src="' + themaJson.urlsToLogos.small + '">\n              </a>\n          </div>\n        </div>\n\n        <div class="title">\n            <a href="#" onclick = "app.controller.fillArticles(\'' + themaJson.id + '\');">\n                ' + themaJson.name + '\n              </a>\n        </div>\n        <div class="description">' + themaJson.description + '</div>\n      </div>\n    </div>';
+	// private method
+	var getImageElement = function getImageElement(id, imageUrl, callback) {
+	    var image = document.createElement("div");
+	    image.setAttribute("class", "image");
+	
+	    var floater = document.createElement("div");
+	    floater.setAttribute("class", "floater");
+	
+	    var a = document.createElement("a");
+	    a.setAttribute("href", "#");
+	    a.addEventListener("click", function () {
+	        callback(id);
+	    }, false);
+	
+	    var img = document.createElement("img");
+	    img.setAttribute("src", imageUrl);
+	
+	    a.appendChild(img);
+	    floater.appendChild(a);
+	    image.appendChild(floater);
+	    return image;
 	};
 	
-	var createArticle = function createArticle(articleJson) {
-	  return '\n    <div class="article-container">\n      <div class="body">\n        <div class="image">\n          <div class=\'floater\'>\n            <a href="' + articleJson.url + '" alt="Full article" target="_blank">\n              <img src="' + articleJson.urlToImage + '">\n            </a>\n          </div>\n        </div>\n\n            <div class="title">\n              <a href="' + articleJson.url + '" alt="Full article" target="_blank">\n                ' + articleJson.title + '\n              </a>\n            </div>\n            <div class="author">' + (articleJson.author ? 'by ' + articleJson.author : ' ') + '</div>\n            <div class="description">' + articleJson.description + '</div>\n            <div class="publish-at">' + (articleJson.publishedAt ? articleJson.publishedAt : ' ') + '</div>\n          </div>\n  </div>';
+	// private method
+	var getTitleElement = function getTitleElement(id, title, callback) {
+	    var titleEl = document.createElement("div");
+	    titleEl.setAttribute("class", "title");
+	
+	    var a = document.createElement("a");
+	    a.setAttribute("href", "#");
+	    a.innerHTML = title;
+	    a.addEventListener("click", function () {
+	        callback(id);
+	    }, false);
+	
+	    titleEl.appendChild(a);
+	    return titleEl;
 	};
 	
-	// service for converting JSON objects to HTML themes and articles objects
+	// private method
+	var getDescriptionElement = function getDescriptionElement(description) {
+	    var descriptionEl = document.createElement("div");
+	    descriptionEl.setAttribute("class", "description");
+	    descriptionEl.innerHTML = description;
 	
-	var HtmlService = function () {
-	  function HtmlService() {
-	    _classCallCheck(this, HtmlService);
-	  }
+	    return descriptionEl;
+	};
 	
-	  _createClass(HtmlService, [{
-	    key: 'getThemesHtml',
-	    value: function getThemesHtml(themes, callback) {
-	      return themes.map(function (el) {
-	        return createThemes(el, callback);
-	      });
+	var ThemeViewComponent = function () {
+	    function ThemeViewComponent(componentSourceObj, callback) {
+	        _classCallCheck(this, ThemeViewComponent);
+	
+	        this.componentSourceObj = componentSourceObj;
+	        this.callback = callback;
 	    }
-	  }, {
-	    key: 'getArticlesHtml',
-	    value: function getArticlesHtml(articles) {
-	      return articles.map(function (el) {
-	        return createArticle(el);
-	      });
-	    }
-	  }]);
 	
-	  return HtmlService;
+	    _createClass(ThemeViewComponent, [{
+	        key: "getView",
+	        value: function getView() {
+	            var root = document.createElement("div");
+	            root.setAttribute("class", "article-container");
+	
+	            var body = document.createElement("div");
+	            body.setAttribute("class", "body");
+	
+	            var image = getImageElement(this.componentSourceObj.id, this.componentSourceObj.urlsToLogos.small, this.callback);
+	
+	            var title = getTitleElement(this.componentSourceObj.id, this.componentSourceObj.name, this.callback);
+	
+	            var description = getDescriptionElement(this.componentSourceObj.description);
+	
+	            body.appendChild(image);
+	            body.appendChild(title);
+	            body.appendChild(description);
+	
+	            root.appendChild(body);
+	            return root;
+	        }
+	    }]);
+	
+	    return ThemeViewComponent;
 	}();
 	
-	exports.default = HtmlService;
+	exports.default = ThemeViewComponent;
+
+/***/ },
+/* 15 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	// private method
+	var getImageElement = function getImageElement(imageUrl, articleUrl) {
+	    var image = document.createElement("div");
+	    image.setAttribute("class", "image");
+	
+	    var floater = document.createElement("div");
+	    floater.setAttribute("class", "floater");
+	
+	    var a = document.createElement("a");
+	    a.setAttribute("href", articleUrl);
+	    a.setAttribute("target", "_blank");
+	
+	    var img = document.createElement("img");
+	    img.setAttribute("src", imageUrl);
+	
+	    a.appendChild(img);
+	    floater.appendChild(a);
+	    image.appendChild(floater);
+	    return image;
+	};
+	
+	// private method
+	var getTitleElement = function getTitleElement(articleUrl, title) {
+	    var titleEl = document.createElement("div");
+	    titleEl.setAttribute("class", "title");
+	
+	    var a = document.createElement("a");
+	    a.setAttribute("href", articleUrl);
+	    a.setAttribute("target", "_blank");
+	    a.innerHTML = title;
+	
+	    titleEl.appendChild(a);
+	    return titleEl;
+	};
+	
+	// private method
+	var getAuthorElement = function getAuthorElement(author) {
+	    var authorEl = document.createElement("div");
+	    authorEl.setAttribute("class", "author");
+	    authorEl.innerHTML = author ? 'by ' + author : '';
+	
+	    return authorEl;
+	};
+	
+	// private method
+	var getDescriptionElement = function getDescriptionElement(description) {
+	    var descriptionEl = document.createElement("div");
+	    descriptionEl.setAttribute("class", "description");
+	    descriptionEl.innerHTML = description;
+	
+	    return descriptionEl;
+	};
+	
+	// private method
+	var getPublishAtElement = function getPublishAtElement(publishAt) {
+	    var publishAtEl = document.createElement("div");
+	    publishAtEl.setAttribute("class", "publish-at");
+	    publishAtEl.innerHTML = publishAt ? publishAt : '';
+	
+	    return publishAtEl;
+	};
+	
+	var ArticleViewComponent = function () {
+	    function ArticleViewComponent(componentSourceObj) {
+	        _classCallCheck(this, ArticleViewComponent);
+	
+	        this.componentSourceObj = componentSourceObj;
+	    }
+	
+	    _createClass(ArticleViewComponent, [{
+	        key: "getView",
+	        value: function getView() {
+	            var root = document.createElement("div");
+	            root.setAttribute("class", "article-container");
+	
+	            var body = document.createElement("div");
+	            body.setAttribute("class", "body");
+	
+	            var image = getImageElement(this.componentSourceObj.urlToImage, this.componentSourceObj.url);
+	
+	            var title = getTitleElement(this.componentSourceObj.url, this.componentSourceObj.title);
+	
+	            var author = getAuthorElement(this.componentSourceObj.author);
+	
+	            var description = getDescriptionElement(this.componentSourceObj.description);
+	
+	            var publishAt = getPublishAtElement(this.componentSourceObj.publishedAt);
+	
+	            body.appendChild(image);
+	            body.appendChild(title);
+	            body.appendChild(author);
+	            body.appendChild(description);
+	            body.appendChild(publishAt);
+	
+	            root.appendChild(body);
+	            return root;
+	        }
+	    }]);
+	
+	    return ArticleViewComponent;
+	}();
+	
+	exports.default = ArticleViewComponent;
+
+/***/ },
+/* 16 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var instance = null;
+	
+	var Observeble = function () {
+	    function Observeble() {
+	        _classCallCheck(this, Observeble);
+	
+	        this.observers = new Map();
+	    }
+	
+	    _createClass(Observeble, [{
+	        key: "subscribe",
+	        value: function subscribe(label, callback) {
+	            if (!this.observers.has(label)) {
+	                this.observers.set(label, []);
+	            }
+	
+	            this.observers.get(label).push(callback);
+	        }
+	    }, {
+	        key: "unsubscribe",
+	        value: function unsubscribe(label, callback) {
+	            if (observers.has(label)) {
+	                var callbacks = observers.get(label);
+	                var newcallbacks = callbacks.filter(function (e) {
+	                    return e != callback;
+	                });
+	                this.observers.set(label, newcallbacks);
+	                return true;
+	            }
+	            return false;
+	        }
+	    }, {
+	        key: "run",
+	        value: function run(label) {
+	            for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	                args[_key - 1] = arguments[_key];
+	            }
+	
+	            if (observers.has(label)) {
+	                var callbacks = observers.get(label);
+	                callbacks.forEach(function (callback) {
+	                    callback(args);
+	                });
+	                return true;
+	            }
+	            return false;
+	        }
+	    }], [{
+	        key: "getInstance",
+	        value: function getInstance() {
+	            if (!instance) {
+	                instance = new Observeble();
+	            }
+	
+	            // return singltone
+	            return instance;
+	        }
+	    }]);
+	
+	    return Observeble;
+	}();
+	
+	exports.default = Observeble;
 
 /***/ }
 ]);

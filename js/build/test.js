@@ -35,7 +35,7 @@ var test =
 /******/ 	__webpack_require__.c = installedModules;
 /******/
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "/FrontCamp-Home3/js/build/";
+/******/ 	__webpack_require__.p = "./js/build/";
 /******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);

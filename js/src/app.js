@@ -7,10 +7,10 @@ if (showNews) {
         // AMD
         require(["./controllers/themeController"],
             (Controller) => {
-                let controller = new Controller();
+                let controller = new Controller.default();
                 controller.init();
 
-                // hide showNews button
+                //hide showNews button
                 showNews.style.display = 'none';
 
                 exports.controller = controller;
